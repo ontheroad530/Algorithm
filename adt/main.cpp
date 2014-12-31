@@ -37,10 +37,22 @@ void test_array()
 
 
     Array<int> c = a;
+    c.set_length(4);
+    c[3] = 4;
 
     std::cout << "c: " << std::endl;
     for(unsigned int i = 0; i < c.size(); ++i)
         std::cout << c[i] << " ";
+    std::cout << std::endl;
+
+    Array_2D<int> arrary_2d(3, 3);
+    for(int i =0; i < 3; ++i)
+        for(int j = 0; j < 3; ++j)
+            arrary_2d[i][j] = i + j;
+
+    for(int i =0; i < 3; ++i)
+        for(int j = 0; j < 3; ++j)
+            std::cout << arrary_2d[i][j] << " ";
     std::cout << std::endl;
 
     std::cout << "****test array end********" << std::endl;

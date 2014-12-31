@@ -7,6 +7,9 @@ template<typename T>
 class Linked_List;
 
 template<typename T>
+/**
+ * @brief The List_Element class
+ */
 class List_Element
 {
 public:
@@ -23,7 +26,31 @@ private:
     List_Element*   _next;
 };
 
+
 template<typename T>
+const T &List_Element<T>::data() const
+{
+    return _data;
+}
+
+template<typename T>
+const List_Element<T> *List_Element<T>::next() const
+{
+    return _next;
+}
+
+template<typename T>
+List_Element<T>::List_Element(const T &data, List_Element *next)
+    :_data(data)
+    ,_next(next)
+{
+}
+
+
+template<typename T>
+/**
+ * @brief The Linked_List class
+ */
 class Linked_List
 {
 public:
@@ -53,25 +80,6 @@ private:
     List_Element<T>* _head;
     List_Element<T>* _tail;
 };
-
-template<typename T>
-const T &List_Element<T>::data() const
-{
-    return _data;
-}
-
-template<typename T>
-const List_Element<T> *List_Element<T>::next() const
-{
-    return _next;
-}
-
-template<typename T>
-List_Element<T>::List_Element(const T &data, List_Element *next)
-    :_data(data)
-    ,_next(next)
-{
-}
 
 template<typename T>
 Linked_List<T>::Linked_List()

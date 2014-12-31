@@ -5,6 +5,9 @@
 
 
 template <typename T>
+/**
+ * @brief The Array class
+ */
 class Array
 {
 public:
@@ -99,7 +102,7 @@ template <typename T>
 T &Array<T>::operator [](unsigned int n)
 {
     unsigned int pos = n - _base;
-    if(pos >= _length && pos <0)
+    if(pos >= _length || pos <0)
         throw std::out_of_range("invalid position");
 
     return  _data[pos];
@@ -141,4 +144,66 @@ void Array<T>::set_length(unsigned int len)
     _length = len;
 }
 
+
+template<typename T>
+/**
+ * @brief The Array_2D class
+ */
+class Array_2D
+{
+public:
+    class Row
+    {
+    public:
+        Row(Array_2D& array_2d, unsigned int row)
+            :_array_2d(array_2d)
+            ,_row(row)
+        {}
+
+        T& operator [](unsigned int column) const
+        {
+            return _array_2d.select(_row, column);
+        }
+
+    private:
+        Array_2D&   _array_2d;
+        unsigned int const _row;
+    };
+
+    Array_2D(unsigned int, unsigned int);
+    T& select(unsigned int, unsigned int);
+    Row operator [](unsigned int);
+
+protected:
+    unsigned int _number_of_rows;
+    unsigned int _number_of_columns;
+    Array<T>    _array;
+};
+
 #endif // ARRAY_H
+
+template<typename T>
+Array_2D<T>::Array_2D(unsigned int rows, unsigned int columns)
+    :_number_of_rows(rows)
+    ,_number_of_columns(columns)
+    ,_array(rows * columns)
+{
+}
+
+template<typename T>
+T &Array_2D<T>::select(unsigned int row, unsigned int column)
+{
+    if(row >= _number_of_rows)
+        throw std::out_of_range("invalid row");
+
+    if(column >= _number_of_columns)
+        throw std::out_of_range("invalid column");
+
+    return _array[row * _number_of_columns + column];
+}
+
+template<typename T>
+typename Array_2D<T>::Row Array_2D<T>::operator [](unsigned int row)
+{
+    return Row(*this, row);
+}
