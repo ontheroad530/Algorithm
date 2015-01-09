@@ -3,6 +3,8 @@
 
 #include <stdexcept>
 
+namespace GYH
+{
 
 template <typename T>
 /**
@@ -92,7 +94,7 @@ template <typename T>
 const T &Array<T>::operator [](unsigned int n) const
 {
     unsigned int pos = n - _base;
-    if(pos >= _length && pos <0)
+    if(pos >= _length)
         throw std::out_of_range("invalid position");
 
     return  _data[pos];
@@ -102,7 +104,7 @@ template <typename T>
 T &Array<T>::operator [](unsigned int n)
 {
     unsigned int pos = n - _base;
-    if(pos >= _length || pos <0)
+    if(pos >= _length)
         throw std::out_of_range("invalid position");
 
     return  _data[pos];
@@ -135,6 +137,31 @@ unsigned int Array<T>::size() const
 template <typename T>
 void Array<T>::set_base(unsigned int base)
 {
+    //base ????
+    //could't understand
+#if 0
+    T* const new_data = new T[_length];
+    if(!new_data)
+    {
+        throw std::out_of_range("new Array<T> error");
+    }
+
+    if(base < _base)
+    {
+        unsigned int shift = _base - base;
+        for(int i = _length; i >= shift; --i)
+            new_data[i] = _data[i-shift];
+    }
+    else
+    {
+        unsigned int shift = base - _base;
+        for(int i = shift; i < _length; ++i)
+            new_data[i] = _data[i+shift];
+    }
+
+    delete []_data;
+    _data = new_data;
+#endif
     _base = base;
 }
 
@@ -206,4 +233,6 @@ template<typename T>
 typename Array_2D<T>::Row Array_2D<T>::operator [](unsigned int row)
 {
     return Row(*this, row);
+}
+
 }

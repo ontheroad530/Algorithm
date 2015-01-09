@@ -3,6 +3,7 @@
 #include "array.h"
 #include "linked_list.h"
 
+using namespace GYH;
 
 void test_array();
 void test_linked_list();

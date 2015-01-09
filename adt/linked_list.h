@@ -3,6 +3,9 @@
 
 #include <stdexcept>
 
+namespace GYH
+{
+
 template<typename T>
 class Linked_List;
 
@@ -283,6 +286,8 @@ void Linked_List<T>::insert_before(const List_Element<T> *arg, const T &item)
 
         prev_ptr->_next = tmp;
     }
+}
+
 }
 
 #endif // LINKED_LIST_H

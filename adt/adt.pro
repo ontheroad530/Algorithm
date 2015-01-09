@@ -15,8 +15,10 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    object.cpp
 
 HEADERS += \
     array.h \
-    linked_list.h
+    linked_list.h \
+    object.h
