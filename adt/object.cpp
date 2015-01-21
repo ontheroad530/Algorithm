@@ -6,25 +6,25 @@
 namespace GYH
 {
 
-inline bool operator == (Object const& left, Object const& right)
+bool operator == (Object const& left, Object const& right)
 { return left.compare(right) == 0; }
 
-inline bool operator != (Object const& left, Object const& right)
+bool operator != (Object const& left, Object const& right)
 { return left.compare(right) != 0; }
 
-inline bool operator <= (Object const& left, Object const& right)
+bool operator <= (Object const& left, Object const& right)
 { return left.compare(right) <= 0; }
 
-inline bool operator < (Object const& left, Object const& right)
+bool operator < (Object const& left, Object const& right)
 { return left.compare(right) < 0; }
 
-inline bool operator >= (Object const& left, Object const& right)
+bool operator >= (Object const& left, Object const& right)
 { return left.compare(right) >= 0; }
 
-inline bool operator > (Object const& left, Object const& right)
+bool operator > (Object const& left, Object const& right)
 { return left.compare(right) > 0; }
 
-inline std::ostream& operator << (std::ostream& os, Object const& obj)
+std::ostream& operator << (std::ostream& os, Object const& obj)
 {
     obj.put(os);
     return os;
@@ -81,35 +81,35 @@ Null_Object::Null_Object()
 
 }
 
-int compare(int l, int r) const
+int compare(int l, int r)
 {
     if(l == r)
         return 0;
     return l > r ? 1 : -1;
 }
 
-int compare(unsigned int l, unsigned int r) const
+int compare(unsigned int l, unsigned int r)
 {
     if(l == r)
         return 0;
     return l > r ? 1 : -1;
 }
 
-int compare(double l, double r) const
+int compare(double l, double r)
 {
     if(l == r)
         return 0;
     return l > r ? 1 : -1;
 }
 
-int compare(char l, char r) const
+int compare(char l, char r)
 {
     if(l == r)
         return 0;
     return l > r ? 1 : -1;
 }
 
-int compare(const std::string &l, const std::string &r) const
+int compare(const std::string &l, const std::string &r)
 {
     return strcmp(l.c_str(), r.c_str());
 }

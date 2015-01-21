@@ -9,12 +9,11 @@ namespace GYH
 typedef unsigned long Hash_Value;
 
 
-int compare(int l, int r) const;
-int compare(unsigned int l, unsigned int r) const;
-int compare(double l, double r) const;
-int compare(char l, char r) const;
-int compare(const std::string& l, const std::string& r) const;
-
+int compare(int l, int r);
+int compare(unsigned int l, unsigned int r);
+int compare(double l, double r);
+int compare(char l, char r);
+int compare(const std::string& l, const std::string& r);
 
 class Object
 {
@@ -68,14 +67,14 @@ Wrapper<T>::Wrapper()
 }
 
 template<typename T>
-Wrapper<T>::Wrapper(const GYH::T &t)
+Wrapper<T>::Wrapper(const T &t)
     :_datum(t)
 {
 
 }
 
 template<typename T>
-Wrapper &Wrapper<T>::operator =(const GYH::T &t)
+Wrapper<T> &Wrapper<T>::operator =(const T &t)
 {
     _datum = t;
     return *this;
@@ -99,7 +98,7 @@ int Wrapper<T>::compare_to(const Object &obj) const
     Wrapper<T> const& arg =
             dynamic_cast<Wrapper<T> const&>(obj);
 
-    return GYH::compare(*this, obj);
+    return GYH::compare(_datum, arg._datum);
 }
 
 template<typename T>
@@ -108,6 +107,10 @@ Wrapper<T>::operator const T &() const
     return _datum;
 }
 
+typedef Wrapper<char> Char;
+typedef Wrapper<int> Int;
+typedef Wrapper<double> Double;
+typedef Wrapper<std::string> String;
 
 bool operator == (Object const& left, Object const& right);
 bool operator != (Object const& left, Object const& right);

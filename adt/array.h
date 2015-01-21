@@ -165,12 +165,22 @@ void Array<T>::set_base(unsigned int base)
     _base = base;
 }
 
+
 template <typename T>
 void Array<T>::set_length(unsigned int len)
 {
+    T* const new_data = new T[len];
+    unsigned int const min =
+            _length < len ? _length : len;
+    for(unsigned int i = 0; i < min; ++i)
+    {
+        new_data[i] = _data[i];
+    }
+
+    delete []_data;
+    _data = new_data;
     _length = len;
 }
-
 
 template<typename T>
 /**
