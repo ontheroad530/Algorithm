@@ -4,19 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       -= core gui
+TEMPLATE = subdirs
 
-TARGET = bin/adt
-CONFIG   += console
-CONFIG   -= app_bundle
+SUBDIRS += \
+        lib_adt\
+        test_adt
 
-TEMPLATE = app
-
-
-SOURCES += main.cpp \
-    object.cpp
-
-HEADERS += \
-    array.h \
-    linked_list.h \
-    object.h
