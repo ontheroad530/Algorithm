@@ -46,7 +46,7 @@ Object &Association::value() const
 
 Hash_Value Association::hash() const
 {
-
+    return Hash_Value();
 }
 
 void Association::put(std::ostream &os) const

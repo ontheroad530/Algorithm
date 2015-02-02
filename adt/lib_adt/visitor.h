@@ -13,8 +13,7 @@ class Visitor
 {
 public:
     virtual void visit(Object&) = 0;
-    virtual bool is_done()
-    { return false; }
+    virtual bool is_done() { return false; }
 };
 
 class Putting_Visitor: public Visitor

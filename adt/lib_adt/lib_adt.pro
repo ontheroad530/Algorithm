@@ -10,7 +10,10 @@ HEADERS += \
     iterator.h \
     container.h \
     association.h \
-    array.h
+    array.h \
+    stack.h \
+    queue.h \
+    list.h
 
 SOURCES += \
     visitor.cpp \
@@ -18,4 +21,7 @@ SOURCES += \
     object.cpp \
     iterator.cpp \
     container.cpp \
-    association.cpp
+    association.cpp \
+    stack.cpp \
+    queue.cpp \
+    list.cpp

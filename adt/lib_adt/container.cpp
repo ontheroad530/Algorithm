@@ -24,7 +24,7 @@ bool Container::is_full() const
 
 Hash_Value Container::hash() const
 {
-
+    return Hash_Value();
 }
 
 void Container::put(std::ostream &os) const

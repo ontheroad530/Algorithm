@@ -1,8 +1,10 @@
 #include <iostream>
 
 #include "test_list.h"
-#include "linked_list.h"
 #include "object.h"
+#include "linked_list.h"
+#include "list.h"
+
 
 using namespace GYH;
 
@@ -52,4 +54,25 @@ void test_linked_list()
     }
 
     std::cout << "****test linked_list end********" << std::endl;
+}
+
+
+void test_list()
+{
+    std::cout << "****test ordered list begin********" << std::endl;
+
+    List_As_Linked_List order_list;
+    order_list.insert(* new Double(1.1));
+
+    Position& pos =  order_list.find_position(* new Double(1.1));
+
+    order_list.inser_before(pos, * new Double(2.2));
+    order_list.inser_after(pos, * new Double(3.3));
+
+    std::cout << order_list[0]
+            << ", " << order_list[1]
+            << ", " << order_list[2]
+            << std::endl;
+
+    std::cout << "****test ordered list end********" << std::endl;
 }

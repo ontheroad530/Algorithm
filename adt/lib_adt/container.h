@@ -17,10 +17,10 @@ public:
     virtual bool is_full() const;
     virtual Hash_Value hash() const;
     virtual void put(std::ostream &) const;
-    virtual GYH::Iterator& new_iterator() const;
+    virtual Iterator& new_iterator() const;
 
     virtual void purge() = 0;
-    virtual void accept(GYH::Visitor&) const = 0;
+    virtual void accept(Visitor&) const = 0;
 
 
 protected:
