@@ -217,8 +217,6 @@ protected:
     Array<T>    _array;
 };
 
-#endif // ARRAY_H
-
 template<typename T>
 Array_2D<T>::Array_2D(unsigned int rows, unsigned int columns)
     :_number_of_rows(rows)
@@ -246,3 +244,7 @@ typename Array_2D<T>::Row Array_2D<T>::operator [](unsigned int row)
 }
 
 }
+
+
+#endif // ARRAY_H
+

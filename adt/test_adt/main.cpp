@@ -2,6 +2,7 @@
 #include "test_list.h"
 #include "test_stack.h"
 #include "test_queue.h"
+#include "test_hash_table.h"
 
 int main()
 {
@@ -10,6 +11,7 @@ int main()
     test_list();
     test_stack();
     test_queue();
+    test_hash_table();
 
     return 0;
 }

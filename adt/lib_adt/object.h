@@ -83,7 +83,7 @@ Wrapper<T> &Wrapper<T>::operator =(const T &t)
 template<typename T>
 Hash_Value Wrapper<T>::hash() const
 {
-    return Hash_Value();
+    return _datum;
 }
 
 template<typename T>

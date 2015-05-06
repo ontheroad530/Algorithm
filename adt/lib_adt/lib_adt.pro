@@ -13,7 +13,8 @@ HEADERS += \
     array.h \
     stack.h \
     queue.h \
-    list.h
+    list.h \
+    hash_table.h
 
 SOURCES += \
     visitor.cpp \
@@ -24,4 +25,5 @@ SOURCES += \
     association.cpp \
     stack.cpp \
     queue.cpp \
-    list.cpp
+    list.cpp \
+    hash_table.cpp

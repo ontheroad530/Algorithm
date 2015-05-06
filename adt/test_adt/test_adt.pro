@@ -14,10 +14,12 @@ SOURCES += \
     test_array.cpp \
     test_list.cpp \
     test_stack.cpp \
-    test_queue.cpp
+    test_queue.cpp \
+    test_hash_table.cpp
 
 HEADERS += \
     test_array.h \
     test_list.h \
     test_stack.h \
-    test_queue.h
+    test_queue.h \
+    test_hash_table.h

@@ -7,7 +7,6 @@
 namespace GYH
 {
 
-
 class Queue : public virtual Container
 {
 public:
