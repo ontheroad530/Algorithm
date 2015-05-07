@@ -34,5 +34,17 @@ void test_hash_table()
         ++iter;
     }
 
+    Chained_Scatter_Table chained_scatter_table(5);
+    chained_scatter_table.insert( *new Double(1.1));
+    chained_scatter_table.insert( *new Double(2.1));
+    chained_scatter_table.insert( *new Double(3.1));
+    chained_scatter_table.insert( *new Double(4.1));
+    chained_scatter_table.insert( *new Double(5.1));
+
+    std::stringstream ss_s;
+    Putting_Visitor visit(ss_s);
+    chained_scatter_table.accept(visit);
+    std::cout << ss_s.str() << std::endl;
+
     std::cout << "****test Chained_Hash_Table end********" << std::endl;
 }

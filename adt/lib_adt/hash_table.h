@@ -55,7 +55,41 @@ public:
 private:
     Array< Linked_List<Object*> > const&   _array;
     Queue&  _queue;
-    int     _pos;
+    unsigned int     _pos;
+};
+
+
+class Chained_Scatter_Table: public Hash_Table
+{
+    class Entry
+    {
+    public:
+        Entry();
+
+        enum { NULL_PTR = ~0U };
+
+        Object*         _object;
+        unsigned int    _next;
+    };
+
+public:
+    Chained_Scatter_Table(unsigned int);
+    ~Chained_Scatter_Table();
+
+    void purge();
+    void insert(Object &);
+    Object& find(const Object &) const;
+    void withdraw(Object &object);
+
+    bool is_member(Object const&) const;
+    void accept(Visitor&) const;
+    Iterator& new_iterator() const;
+
+private:
+    int compare_to(Object const&) const;
+
+private:
+    Array<Entry>    _array;
 };
 
 }
