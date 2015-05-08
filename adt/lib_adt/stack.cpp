@@ -16,7 +16,7 @@ Stack_As_Array::~Stack_As_Array()
 
 void Stack_As_Array::purge()
 {
-    if( is_onwer() )
+    if( is_owner() )
     {
         for(unsigned int i = 0; i < _count; ++i)
             delete _array[i];
@@ -105,6 +105,111 @@ void Stack_As_Array::Iter::operator ++()
 {
     if( _position < _stack._count)
         ++_position;
+}
+
+Stack_As_Linked_List::Stack_As_Linked_List()
+    :_list()
+{
+
+}
+
+Stack_As_Linked_List::~Stack_As_Linked_List()
+{
+    purge();
+}
+
+void Stack_As_Linked_List::purge()
+{
+    if( is_owner() )
+    {
+        List_Element<Object*> const * ptr;
+        for(ptr = _list.head(); ptr != 0; ptr = ptr->next() )
+            delete ptr->data();
+    }
+
+    _list.purge();
+    _count = 0;
+}
+
+void Stack_As_Linked_List::push(Object &obj)
+{
+    _list.prepend( &obj );
+    ++_count;
+}
+
+Object &Stack_As_Linked_List::pop()
+{
+    if( _count == 0)
+        throw std::domain_error("stack is empty");
+
+    Object& result = *_list.first();
+    _list.extract( &result );
+    --_count;
+
+    return result;
+}
+
+Object &Stack_As_Linked_List::top() const
+{
+    if( _count == 0)
+        throw std::domain_error("stack is empty");
+
+    return *_list.first();
+}
+
+void Stack_As_Linked_List::accept(Visitor &visitor) const
+{
+    List_Element<Object*> const* ptr;
+
+    for(ptr = _list.head();
+        ptr != 0 && !visitor.is_done();
+        ptr = ptr->next())
+    {
+        visitor.visit( *ptr->data() );
+    }
+}
+
+Iterator &Stack_As_Linked_List::new_iterator() const
+{
+    return * new Iter(*this);
+}
+
+int Stack_As_Linked_List::compare_to(const Object &obj) const
+{
+    Stack_As_Linked_List const & stack_as_list =
+            dynamic_cast<Stack_As_Linked_List const&>(obj);
+
+    return GYH::compare(_count, stack_as_list._count);
+}
+
+Stack_As_Linked_List::Iter::Iter(const Stack_As_Linked_List &stack)
+    :_stack(stack)
+{
+    reset();
+}
+
+void Stack_As_Linked_List::Iter::reset()
+{
+    _pos = _stack._list.head();
+}
+
+bool Stack_As_Linked_List::Iter::is_done() const
+{
+    return _pos == 0;
+}
+
+Object &Stack_As_Linked_List::Iter::operator *() const
+{
+    if( _pos != 0 )
+        return *_pos->data();
+    else
+        return Null_Object::instance();
+}
+
+void Stack_As_Linked_List::Iter::operator ++()
+{
+    if( _pos != 0)
+        _pos = _pos->next();
 }
 
 

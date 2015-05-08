@@ -19,7 +19,7 @@ Association::Association(Object &key, Object &value)
 
 Association::~Association()
 {
-    if( is_onwer() )
+    if( is_owner() )
     {
         if( _key )
             delete _key;

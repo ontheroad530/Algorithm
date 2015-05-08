@@ -30,7 +30,7 @@ void GYH::Chained_Hash_Table::purge()
 {
     for(unsigned int i = 0; i < _length; ++i)
     {
-        if( is_onwer() )
+        if( is_owner() )
         {
             List_Element<Object*> const *ptr;
 
@@ -193,7 +193,7 @@ void GYH::Chained_Scatter_Table::purge()
     {
         if(_array[i]._object != NULL)
         {
-            if( is_onwer() )
+            if( is_owner() )
                 delete _array[i]._object;
 
             _array[i] = Entry();

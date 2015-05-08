@@ -18,7 +18,7 @@ Queue_As_Array::~Queue_As_Array()
 
 void Queue_As_Array::purge()
 {
-       if( is_onwer() )
+       if( is_owner() )
        {
            for(unsigned int i = 0; i < _count; ++i)
            {
@@ -156,6 +156,74 @@ void Deque_As_Array::enqueue(Object &obj)
 Object &Deque_As_Array::dequeue()
 {
     return Deque::dequeue();
+}
+
+Queue_As_Linked_list::Queue_As_Linked_list()
+    :_list()
+{
+
+}
+
+Queue_As_Linked_list::~Queue_As_Linked_list()
+{
+    purge();
+}
+
+void Queue_As_Linked_list::purge()
+{
+       if( is_owner() )
+       {
+           List_Element<Object*> const * ptr;
+           for(ptr = _list.head(); ptr != 0; ptr = ptr->next() )
+               delete ptr->data();
+       }
+
+       _list.purge();
+       _count = 0;
+}
+
+void Queue_As_Linked_list::accept(Visitor &visitor) const
+{
+    List_Element<Object*> const * ptr;
+    for(ptr = _list.head(); ptr != 0; ptr = ptr->next())
+    {
+        if( !visitor.is_done() )
+            visitor.visit( *ptr->data() );
+    }
+}
+
+Object &Queue_As_Linked_list::head() const
+{
+    if(_count == 0)
+        throw std::domain_error("queue is empty");
+
+    return *_list.first();
+}
+
+void Queue_As_Linked_list::enqueue(Object &obj)
+{
+    _list.append(&obj);
+    ++_count;
+}
+
+Object &Queue_As_Linked_list::dequeue()
+{
+    if(_count == 0)
+        throw std::domain_error("queue is empty");
+
+    Object& result = *_list.first();
+    _list.extract(&result);
+    --_count;
+
+    return result;
+}
+
+int Queue_As_Linked_list::compare_to(const Object &obj) const
+{
+    Queue_As_Linked_list const & queue_as_linked_list =
+            dynamic_cast<Queue_As_Linked_list const&>(obj);
+
+    return GYH::compare( _count, queue_as_linked_list._count);
 }
 
 }

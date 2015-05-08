@@ -14,7 +14,8 @@ HEADERS += \
     stack.h \
     queue.h \
     list.h \
-    hash_table.h
+    hash_table.h \
+    tree.h
 
 SOURCES += \
     visitor.cpp \
@@ -26,4 +27,5 @@ SOURCES += \
     stack.cpp \
     queue.cpp \
     list.cpp \
-    hash_table.cpp
+    hash_table.cpp \
+    tree.cpp

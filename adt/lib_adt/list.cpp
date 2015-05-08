@@ -127,7 +127,7 @@ void List_As_Linked_List::inser_before(const Position &pos, Object &obj)
 void List_As_Linked_List::purge()
 {
     List_Element<Object*>const * element;
-    if( is_onwer() )
+    if( is_owner() )
     {
         for( element = _linked_list.head(); element; element = element->next() )
         {

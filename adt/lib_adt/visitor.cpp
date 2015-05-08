@@ -19,4 +19,37 @@ void Putting_Visitor::visit(Object &obj)
     _comma = true;
 }
 
+Pre_Order::Pre_Order(Visitor &v)
+    :_visitor(v)
+{
+
+}
+
+void Pre_Order::pre_visit(Object &obj)
+{
+    _visitor.visit(obj);
+}
+
+In_Order::In_Order(Visitor &v)
+    :_visitor(v)
+{
+
+}
+
+void In_Order::visit(Object &obj)
+{
+    _visitor.visit(obj);
+}
+
+Post_Order::Post_Order(Visitor &v)
+    :_visitor(v)
+{
+
+}
+
+void Post_Order::post_visit(Object &obj)
+{
+    _visitor.visit(obj);
+}
+
 }

@@ -3,6 +3,7 @@
 #include "test_stack.h"
 #include "test_queue.h"
 #include "test_hash_table.h"
+#include "test_tree.h"
 
 int main()
 {
@@ -12,6 +13,7 @@ int main()
     test_stack();
     test_queue();
     test_hash_table();
+    test_tree();
 
     return 0;
 }

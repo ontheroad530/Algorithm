@@ -3,6 +3,7 @@
 
 #include "container.h"
 #include "array.h"
+#include "list.h"
 
 namespace GYH
 {
@@ -13,6 +14,26 @@ public:
     virtual Object& head() const = 0;
     virtual void enqueue(Object&) = 0;
     virtual Object& dequeue() = 0;
+};
+
+class Queue_As_Linked_list: public virtual Queue
+{
+public:
+    Queue_As_Linked_list();
+    ~Queue_As_Linked_list();
+
+    void purge();
+    void accept(Visitor &) const;
+
+    Object& head() const;
+    void enqueue(Object &);
+    Object& dequeue();
+
+protected:
+    int compare_to(const Object &) const;
+
+protected:
+    Linked_List<Object*>    _list;
 };
 
 class Queue_As_Array : public virtual Queue

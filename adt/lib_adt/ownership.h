@@ -13,7 +13,7 @@ protected:
 public:
     void assert_ownership();
     void rescind_ownership();
-    bool is_onwer() const;
+    bool is_owner() const;
 
 private:
     bool    _is_owner;

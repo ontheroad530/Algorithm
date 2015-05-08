@@ -8,7 +8,6 @@
 namespace GYH
 {
 
-
 class Visitor
 {
 public:
@@ -26,6 +25,47 @@ public:
 private:
     std::ostream&   _stream;
     bool            _comma;
+};
+
+class Pre_Post_Visitor: public Visitor
+{
+public:
+    virtual void pre_visit(Object&){}
+    virtual void visit(Object&){}
+    virtual void post_visit(Object&){}
+};
+
+class Pre_Order: public Pre_Post_Visitor
+{
+public:
+    Pre_Order(Visitor& v);
+
+    void pre_visit(Object& obj);
+
+private:
+    Visitor&  _visitor;
+};
+
+class In_Order: public Pre_Post_Visitor
+{
+public:
+    In_Order(Visitor& v);
+
+    void visit(Object &obj);
+
+private:
+    Visitor&    _visitor;
+};
+
+class Post_Order: public Pre_Post_Visitor
+{
+public:
+    Post_Order(Visitor& v);
+
+    void post_visit(Object& obj);
+
+private:
+    Visitor&    _visitor;
 };
 
 }

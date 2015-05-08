@@ -25,7 +25,7 @@ void Ownership::rescind_ownership()
     _is_owner = false;
 }
 
-bool Ownership::is_onwer() const
+bool Ownership::is_owner() const
 {
     return _is_owner;
 }
