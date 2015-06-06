@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include "tree.h"
 #include "queue.h"
 
@@ -376,4 +378,269 @@ int GYH::Binary_Tree::compare_to(const GYH::Object &obj) const
         return result;
     }
 
+}
+
+
+GYH::BST &GYH::BST::left() const
+{
+    return dynamic_cast<BST&>(Binary_Tree::left());
+}
+
+GYH::BST &GYH::BST::right() const
+{
+    return dynamic_cast<BST&>(Binary_Tree::right());
+}
+
+GYH::Object &GYH::BST::find(const GYH::Object &obj) const
+{
+    if( is_empty() )
+        return Null_Object::instance();
+
+    int const diff = obj.compare( *_key );
+    if(0 == diff)
+        return *_key;
+    else if(diff < 0)
+        return left().find(obj);
+    else
+        return right().find(obj);
+}
+
+GYH::Object &GYH::BST::find_min() const
+{
+    if( is_empty() )
+        return Null_Object::instance();
+    else if( left().is_empty() )
+        return *_key;
+    else
+        return left().find_min();
+}
+
+GYH::Object &GYH::BST::find_max() const
+{
+    if( is_empty() )
+        return Null_Object::instance();
+    else if( right().is_empty() )
+        return *_key;
+    else
+        return right().find_max();
+}
+
+void GYH::BST::insert(GYH::Object &obj)
+{
+    if( is_empty() )
+        attach_key(obj);
+    else
+    {
+        int const diff = obj.compare(*_key);
+        if(0 == diff)
+            throw std::invalid_argument("duplicate key");
+        else if(diff < 0)
+            left().insert(obj);
+        else
+            right().insert(obj);
+    }
+    balance();
+}
+
+void GYH::BST::withdraw(GYH::Object &obj)
+{
+    if( is_empty() )
+        throw std::invalid_argument("object not found");
+
+    int const diff = obj.compare(*_key);
+    if(0 == diff)
+    {
+        if( !left().is_empty() )
+        {
+            Object& max = left().find_max();
+            _key = &max;
+            left().withdraw(max);
+        }
+        else if( !right().is_empty() )
+        {
+            Object& min = right().find_min();
+            _key = &min;
+            right().withdraw(min);
+        }
+        else
+            detach_key();
+    }
+    else if(diff < 0)
+        left().withdraw(obj);
+    else
+        right().withdraw(obj);
+
+    balance();
+}
+
+bool GYH::BST::is_member(const GYH::Object &obj) const
+{
+    if( find(obj) != Null_Object::instance())
+        return true;
+
+    return false;
+}
+
+void GYH::BST::attach_key(GYH::Object &obj)
+{
+    if(!is_empty())
+        throw std::domain_error("invalid operation");
+
+    _key = &obj;
+    _left = new BST();
+    _right = new BST();
+}
+
+GYH::Object &GYH::BST::detach_key()
+{
+    if( !is_leaf() )
+        throw std::domain_error("invalid operation");
+
+    Object& result = *_key;
+    delete _left;
+    delete _right;
+    _key = 0;
+    _left = 0;
+    _right = 0;
+
+    return result;
+}
+
+void GYH::BST::balance()
+{
+
+}
+
+
+GYH::AVL_Tree::AVL_Tree()
+    :BST()
+    ,_height(-1)
+{
+
+}
+
+int GYH::AVL_Tree::height() const
+{
+    return _height;
+}
+
+GYH::AVL_Tree &GYH::AVL_Tree::left() const
+{
+    return dynamic_cast<AVL_Tree&>(BST::left());
+}
+
+GYH::AVL_Tree &GYH::AVL_Tree::right() const
+{
+    return dynamic_cast<AVL_Tree&>(BST::right());
+}
+
+int GYH::AVL_Tree::balance_factor() const
+{
+    if( is_empty() )
+        return 0;
+    else
+        return left().height() - right().height();
+}
+
+void GYH::AVL_Tree::adjust_height()
+{
+    if( is_empty() )
+        _height = -1;
+    else
+        _height = std::max( left().height(), right().height() ) + 1;
+}
+
+void GYH::AVL_Tree::ll_rotation()
+{
+    if( is_empty() )
+        throw std::domain_error("invalid rotation");
+
+    Binary_Tree* const tmp = _right;
+    _right = _left;
+    _left = right()._left;
+    right()._left = right()._right;
+    right()._right = tmp;
+
+    Object* const tmp_obj = _key;
+    _key = right()._key;
+    right()._key = tmp_obj;
+
+    right().adjust_height();
+    adjust_height();
+}
+
+void GYH::AVL_Tree::lr_rotation()
+{
+    if( is_empty() )
+        throw std::domain_error("invalid rotation");
+
+    left().rr_rotation();
+    ll_rotation();
+}
+
+void GYH::AVL_Tree::rr_rotation()
+{
+    if( is_empty() )
+        throw std::domain_error("invalid rotaion");
+
+    Binary_Tree* const tmp = _left;
+    _left = _right;
+    _right = left()._right;
+    left()._right = left()._left;
+    left()._left = tmp;
+
+    Object* const tmp_obj = _key;
+    _key = left()._key;
+    left()._key = tmp_obj;
+
+    left().adjust_height();
+    adjust_height();
+}
+
+void GYH::AVL_Tree::rl_rotation()
+{
+    if( is_empty() )
+        throw std::domain_error("invalid rotaion");
+
+    right().ll_rotation();
+    rr_rotation();
+}
+
+void GYH::AVL_Tree::attach_key(GYH::Object &obj)
+{
+    if( !is_empty() )
+        throw std::domain_error("invalid operation");
+
+    _key = &obj;
+    _left = new AVL_Tree();
+    _right = new AVL_Tree();
+    _height = 0;
+}
+
+GYH::Object &GYH::AVL_Tree::detach_key()
+{
+    _height = -1;
+    return BST::detach_key();
+}
+
+void GYH::AVL_Tree::balance()
+{
+    adjust_height();
+    if( abs( balance_factor()) > 1 )
+    {
+        if( balance_factor() > 0 )
+        {
+            if( left().balance_factor() > 0 )
+                ll_rotation();
+            else
+                lr_rotation();
+        }
+        else
+        {
+            if( right().balance_factor() < 0 )
+                rr_rotation();
+            else
+                rl_rotation();
+        }
+    }
 }

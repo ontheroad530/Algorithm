@@ -8,7 +8,7 @@ namespace GYH
 {
 
 class Pre_Post_Visitor;
-class Tree : public Container
+class Tree : public virtual Container
 {
     class Iter;
 public:
@@ -92,6 +92,60 @@ protected:
     Object*         _key;
     Binary_Tree*    _left;
     Binary_Tree*    _right;
+};
+
+class Search_Tree : public virtual Tree, public virtual Searchable_Container
+{
+public:
+    virtual Object& find_min() const = 0;
+    virtual Object& find_max() const = 0;
+};
+
+class BST : public Binary_Tree, public Search_Tree
+{
+public:
+    BST& left() const;
+    BST& right() const;
+
+    Object& find(Object const&) const;
+    Object& find_min() const;
+    Object& find_max() const;
+
+    void insert(Object&);
+    void withdraw(Object&);
+
+    bool is_member(Object const&) const;
+
+protected:
+    virtual void attach_key(Object&);
+    virtual Object& detach_key();
+    virtual void balance();
+};
+
+
+class AVL_Tree: public BST
+{
+public:
+    AVL_Tree();
+
+    int height() const;
+    AVL_Tree& left() const;
+    AVL_Tree& right() const;
+
+
+protected:
+    int balance_factor()const;
+    void adjust_height();
+    void ll_rotation();
+    void lr_rotation();
+    void rr_rotation();
+    void rl_rotation();
+    void attach_key(Object &);
+    Object& detach_key();
+    void balance();
+
+protected:
+    int     _height;
 };
 
 }
