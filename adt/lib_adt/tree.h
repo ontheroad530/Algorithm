@@ -148,5 +148,42 @@ protected:
     int     _height;
 };
 
+class MWay_Tree: public Search_Tree
+{
+public:
+    MWay_Tree(unsigned int);
+    ~MWay_Tree();
+
+    Object& key() const;
+    Object& key(unsigned int) const;
+    MWay_Tree& subtree(unsigned int) const;
+
+    virtual bool is_leaf() const;
+    virtual unsigned int degree() const;
+    virtual int height() const;
+
+    void depth_first_traversal(Pre_Post_Visitor&) const;
+
+    Object& find(const Object &) const;
+    Object& find_min() const;
+    Object& find_max() const;
+
+    bool is_member(Object const&) const;
+
+    void insert(Object &);
+    void withdraw(Object &);
+    void purge();
+
+protected:
+    unsigned int find_index(Object const&) const;
+    virtual int compare_to(Object const&) const;
+
+protected:
+    unsigned int const  _m;
+    unsigned int        _num_of_keys;
+    Array<Object*>      _key;
+    Array<MWay_Tree*>   _subtree;
+};
+
 }
 #endif // TREE_H

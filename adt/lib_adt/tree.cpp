@@ -644,3 +644,247 @@ void GYH::AVL_Tree::balance()
         }
     }
 }
+
+
+GYH::MWay_Tree::MWay_Tree(unsigned int m)
+    :_m(m)
+    ,_num_of_keys(0)
+{
+
+}
+
+GYH::MWay_Tree::~MWay_Tree()
+{
+    purge();
+}
+
+GYH::Object &GYH::MWay_Tree::key() const
+{
+    throw std::invalid_argument("invalid operation");
+    return Null_Object::instance();
+}
+
+GYH::Object &GYH::MWay_Tree::key(unsigned int pos) const
+{
+    if(0 == pos || pos > _num_of_keys )
+        throw std::invalid_argument("invalid operation");
+
+    return *_key[pos];
+}
+
+GYH::MWay_Tree &GYH::MWay_Tree::subtree(unsigned int pos) const
+{
+    if(pos > _num_of_keys)
+        throw std::invalid_argument("invalid operation");
+
+    return *_subtree[pos];
+}
+
+bool GYH::MWay_Tree::is_leaf() const
+{
+    if( is_empty() )
+        throw std::domain_error("invalid operation");
+
+    for(unsigned int i = 0; i <= _num_of_keys; ++i)
+    {
+        if( !_subtree[i]->is_empty() )
+            return false;
+    }
+
+    return true;
+}
+
+unsigned int GYH::MWay_Tree::degree() const
+{
+    return _num_of_keys;
+}
+
+int GYH::MWay_Tree::height() const
+{
+    if( is_empty() )
+        return 0;
+
+    if( is_leaf() )
+        return 1;
+
+    int height = 0;
+    for(unsigned int i = 0; i < _num_of_keys; ++i)
+    {
+        int tmp = _subtree[i]->height();
+        height = height >= tmp ? height : tmp;
+    }
+
+    return height + 1;
+}
+
+void GYH::MWay_Tree::depth_first_traversal(GYH::Pre_Post_Visitor &visitor) const
+{
+    if( !is_empty() )
+    {
+        for(unsigned int i = 0; i <= _num_of_keys + 1; ++i)
+        {
+            if(i >= 2)
+                visitor.post_visit(*_key[i-1]);
+            if( i <= _num_of_keys - 1)
+                visitor.pre_visit(*_key[i+1]);
+            if(i >= 1 && i <= _num_of_keys)
+                visitor.visit(*_key[i]);
+            if( i <= _num_of_keys)
+                _subtree[i]->depth_first_traversal(visitor);
+        }
+    }
+}
+
+GYH::Object &GYH::MWay_Tree::find(const GYH::Object &obj) const
+{
+    if( is_empty() )
+        return Null_Object::instance();
+
+    unsigned int const index = find_index(obj);
+    if( index != 0 && obj == *_key[index] )
+        return *_key[index];
+    else
+        return subtree(index).find(obj);
+}
+
+GYH::Object &GYH::MWay_Tree::find_min() const
+{
+    if( is_empty() )
+        return Null_Object::instance();
+    else if( _subtree[0]->is_empty() )
+        return *_key[1];
+    else
+        return dynamic_cast<MWay_Tree*>(_subtree[1])->find_min();
+}
+
+GYH::Object &GYH::MWay_Tree::find_max() const
+{
+    if( is_empty() )
+        return Null_Object::instance();
+    else if( _subtree[_num_of_keys]->is_empty() )
+        return *_key[_num_of_keys];
+    else
+        return dynamic_cast<MWay_Tree*>(_subtree[_num_of_keys])->find_max();
+}
+
+bool GYH::MWay_Tree::is_member(const GYH::Object &obj) const
+{
+    if( find(obj) != Null_Object::instance() )
+        return true;
+
+    return false;
+}
+
+void GYH::MWay_Tree::insert(GYH::Object &obj)
+{
+    if( is_empty() )
+    {
+        _subtree[0] = new MWay_Tree(_m);
+        _key[1] = &obj;
+        _subtree[1] = new MWay_Tree(_m);
+        _num_of_keys = 1;
+    }
+    else
+    {
+        unsigned int const index = find_index(obj);
+        if( index != 0 && obj == *_key[index])
+            throw std::invalid_argument("duplicate key");
+        if(_num_of_keys < _m - 1U)
+        {
+            for(unsigned int i = _num_of_keys; i > index; --i)
+            {
+                _key[i + 1] = _key[i];
+                _subtree[i + 1] = _subtree[i];
+            }
+            _key[index + 1] = &obj;
+            _subtree[index + 1] = new MWay_Tree(_m);
+            ++_num_of_keys;
+        }
+        else
+            _subtree[index]->insert(obj);
+    }
+}
+
+void GYH::MWay_Tree::withdraw(GYH::Object &obj)
+{
+    if( is_empty() )
+        throw std::invalid_argument("object not found");
+
+    unsigned int const index = find_index(obj);
+    if( index != 0 && obj == *_key[index])
+    {
+        if( !_subtree[index-1U]->is_empty() )
+        {
+            Object& max = _subtree[index - 1U]->find_max();
+            _key[index] = &max;
+            _subtree[index-1U]->withdraw(max);
+        }
+        else if( !_subtree[index]->is_empty() )
+        {
+            Object& min = _subtree[index]->find_min();
+            _key[index] = &min;
+            _subtree[index]->withdraw(min);
+        }
+        else
+        {
+            --_num_of_keys;
+            delete _subtree[index];
+            for(unsigned int i = index; i <= _num_of_keys; ++i)
+            {
+                _key[i] = _key[i+1];
+                _subtree[i] = _subtree[i+1];
+            }
+            if(0 == _num_of_keys)
+                delete _subtree[0];
+        }
+    }
+    else
+        _subtree[index]->withdraw(obj);
+}
+
+void GYH::MWay_Tree::purge()
+{
+    if( is_empty() )
+        return;
+
+    if( is_owner() )
+    {
+        for(unsigned int i = 1; i <= _num_of_keys; ++i)
+        {
+            delete _key[i];
+        }
+    }
+    for(unsigned int i = 0; i <= _num_of_keys; ++i)
+    {
+        delete _subtree[i];
+    }
+    _num_of_keys = 0;
+}
+
+unsigned int GYH::MWay_Tree::find_index(const GYH::Object &obj) const
+{
+    if( is_empty() )
+        throw std::domain_error("invalid operation");
+
+    if( obj < *_key[1] )
+        return 0;
+
+    unsigned int left = 1;
+    unsigned int right = _num_of_keys;
+    while( left < right)
+    {
+        int const middle = (left + right + 1) / 2;
+        if( obj >= *_key[middle] )
+            left = middle;
+        else
+            right = middle - 1U;
+    }
+
+    return left;
+}
+
+int GYH::MWay_Tree::compare_to(const GYH::Object &obj) const
+{
+    const MWay_Tree& other = dynamic_cast<const MWay_Tree&>(obj);
+    return GYH::compare(_num_of_keys, other._num_of_keys);
+}
