@@ -185,5 +185,27 @@ protected:
     Array<MWay_Tree*>   _subtree;
 };
 
+//class BTree: public MWay_Tree
+//{
+//public:
+//    BTree(unsigned int);
+//    BTree(unsigned int, BTree&);
+
+//    void insert(Object &);
+//    void withdraw(Object &);
+
+//private:
+//    void insert_pair(Object&, BTree&);
+//    void attach_key(unsigned int, Object&);
+//    void attach_subtree(unsigned int, MWay_Tree&);
+//    Object& insert_key(unsigned int, BTree&);
+//    Object& insert_subtree(unsigned int, BTree&);
+//    void attach_left_halfof(const BTree&);
+//    void attach_right_halfof(const BTree&, Object&, BTree&);
+
+//private:
+//    BTree*  _parant;
+//};
+
 }
 #endif // TREE_H

@@ -16,7 +16,8 @@ SOURCES += \
     test_stack.cpp \
     test_queue.cpp \
     test_hash_table.cpp \
-    test_tree.cpp
+    test_tree.cpp \
+    test_priority.cpp
 
 HEADERS += \
     test_array.h \
@@ -24,4 +25,5 @@ HEADERS += \
     test_stack.h \
     test_queue.h \
     test_hash_table.h \
-    test_tree.h
+    test_tree.h \
+    test_priority.h

@@ -888,3 +888,56 @@ int GYH::MWay_Tree::compare_to(const GYH::Object &obj) const
     const MWay_Tree& other = dynamic_cast<const MWay_Tree&>(obj);
     return GYH::compare(_num_of_keys, other._num_of_keys);
 }
+
+
+//GYH::BTree::BTree(unsigned int m)
+//    :MWay_Tree(m)
+//{
+//}
+
+//GYH::BTree::BTree(unsigned int m, GYH::BTree &parent)
+//    :MWay_Tree(m)
+//    ,_parant(&parent)
+//{
+
+//}
+
+//void GYH::BTree::insert(GYH::Object &obj)
+//{
+//    if( is_empty() )
+//    {
+//        if( !_parant )
+//        {
+//            attach_subtree(0, *new BTree(_m, *this));
+//            attach_key(1, obj);
+//            attach_subtree(1, *new BTree(_m. *this));
+//            _num_of_keys = 1;
+//        }
+//        else
+//            _parant->insert_pair(obj, *new BTree(_m, *_parant));
+//    }
+//    else
+//    {
+//        unsigned int const index = find_index(obj);
+//        if( index != 0 && obj == *_key[index])
+//            throw std::invalid_argument("duplicate key");
+//        _subtree[index]->insert(obj);
+//    }
+//}
+
+//void GYH::BTree::insert_pair(GYH::Object &obj, GYH::BTree &child)
+//{
+//    unsigned int const index = find_index(obj);
+//    BTree& extra_tree = insert_subtree(index + 1, child);
+//    Object& extra_key = insert_key(index+1, obj);
+
+//    if(++_num_of_keys == _m)
+//    {
+
+//    }
+//}
+
+//GYH::Object &GYH::BTree::insert_key(unsigned int, GYH::BTree &)
+//{
+
+//}
